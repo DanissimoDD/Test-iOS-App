@@ -15,9 +15,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
-//        let test = PauseViewModel()
-//        let test2 = PauseViewController(viewModel: test)
-        
         let networkManager = UserDataNetworkManager()
         let viewModel = ViewModel(userDataNetworkManager: networkManager)
         let viewController = ViewController(viewModel: viewModel)

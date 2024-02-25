@@ -19,7 +19,7 @@ class PauseViewController: UIViewController {
         button.layer.cornerRadius = 15
         button.titleLabel?.numberOfLines = 2
         button.titleLabel?.textAlignment = .center
-//        button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
         return button
         }()
     
@@ -54,5 +54,11 @@ class PauseViewController: UIViewController {
             pushButtonResume.centerYAnchor.constraint(equalTo: self.view.centerYAnchor),
             pushButtonResume.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
         ])
+    }
+    
+    @objc func buttonTapped() {
+        DispatchQueue.main.async {
+            self.navigationController?.popViewController(animated: true)
+        }
     }
 }
