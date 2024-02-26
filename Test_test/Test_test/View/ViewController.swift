@@ -108,8 +108,8 @@ final class ViewController: UIViewController {
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.backgroundColor = UIColor(red: 230/255, green: 230/255, blue: 209/255, alpha: 255/255)
         scrollView.isScrollEnabled = true;
+        scrollView.backgroundColor = UIColor(red: 230/255, green: 230/255, blue: 209/255, alpha: 255/255)
         return scrollView
     }()
     
@@ -121,20 +121,31 @@ final class ViewController: UIViewController {
     }()
     // зачем тут скобки и почему мы так делаем
     
+    private let titleLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+        label.textColor = UIColor.black
+        label.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 232/255, alpha: 255/255)
+        label.text = "Review"
+        label.textAlignment = .center
+        label.numberOfLines = 0
+        return label
+        }()
+    
     private let descriptionLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 18)
         label.textColor = UIColor.black
+        label.backgroundColor = UIColor(red: 230/255, green: 230/255, blue: 209/255, alpha: 255/255)
         label.text = "И практикующие журналисты, и исследователи отмечают, что для привлечения внимания читателей в эпоху информационного изобилия и характерного для Интернета клипового восприятия лонгрид должен содержать уникальную и более яркую, более качественную информацию, чем обычно предлагается в СМИ. В англоязычной литературе это названо in-depth reporting7, что подразумевает значительное время и усилия журналиста, потраченные на исследование темы и − как результат − на ее новое понимание, недоступное при поверхностном ознакомлении с темой. Погружение же в тему позволяет затем передать это новое знание и новое понимание в тексте, что станет для читателя вознаграждением за время, потраченное на чтение лонгрида. Именно глубину погружения в тему, качество собранной информации следует считать главной жанровой характеристикой лонгрида. Журналист должен достичь экспертного понимания темы, что позволит ему заметить многие детали и сделать обоснованные выводы. Глубина погружения проявляется и в количестве источников информации, использованных при подготовке материала, и в количестве примеров, подтверждающих заявленный тренд, и в информативности текста, когда большой объем сочетается с высокой плотностью смысла. Но, с точки зрения автора данного исследования, мультимедийная составляющая жанровой характеристикой лонгрида не является, так как с использованием мультимедийных средств можно подавать тексты любого жанра. Тем более, что облегчение восприятия текстовой информации с помощью иллюстративности в прессе и мультимедийности в Интернете – тренд последних 10−20 лет. При этом, если в содержательном плане материал ничем не выделяется, ожидать повышенного интереса к нему только благодаря использованию мультимедиа стоит едва ли. Даже при качественном и оригинальном мультимедийном сопровождении материала интерес может возникнуть именно к этому сопровождению, а не к тексту, и, в лучшем случае, будет «длительный просмотр», а  не «длительное прочтение»."
-//        label.lineBreakMode = .byWordWrapping
         label.numberOfLines = 0
         return label
         }()
     
     private let scrollContentGuide: UILayoutGuide
     private let scrollFrameGuide: UILayoutGuide
-    
     private var viewModel: ViewModelType!
     
     init(viewModel: ViewModelType) {
@@ -166,9 +177,10 @@ final class ViewController: UIViewController {
         view.addSubview(userEmailLabel)
         view.addSubview(pushButtonNext)
         view.addSubview(pushButtonPause)
-        scrollContainer.addSubview(descriptionLabel)
-        scrollView.addSubview(scrollContainer)
+        view.addSubview(titleLabel)
         view.addSubview(scrollView)
+        scrollView.addSubview(scrollContainer)
+        scrollContainer.addSubview(descriptionLabel)
     }
     
     private func setupConstraints() {
@@ -229,28 +241,45 @@ final class ViewController: UIViewController {
         ])
         
         NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: userProfileImageView.bottomAnchor, constant: 8),
+            scrollView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
             scrollView.bottomAnchor.constraint(equalTo: pushButtonNext.topAnchor, constant: -8),
             scrollView.leadingAnchor.constraint(equalTo: margins.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: margins.trailingAnchor),
         ])
         
         NSLayoutConstraint.activate([
-            scrollContainer.topAnchor.constraint(equalTo: scrollContentGuide.bottomAnchor),
-            scrollContainer.bottomAnchor.constraint(equalTo: scrollContentGuide.topAnchor),
-            scrollContainer.leadingAnchor.constraint(equalTo: scrollContentGuide.leadingAnchor),
-            scrollContainer.trailingAnchor.constraint(equalTo: scrollContentGuide.trailingAnchor),
+            titleLabel.topAnchor.constraint(equalTo: userProfileImageView.bottomAnchor),
+            titleLabel.leadingAnchor.constraint(equalTo: margins.leadingAnchor),
+            titleLabel.trailingAnchor.constraint(equalTo: margins.trailingAnchor),
+        ])
+        
 
-            scrollContainer.leadingAnchor.constraint(equalTo: scrollFrameGuide.leadingAnchor),
-            scrollContainer.trailingAnchor.constraint(equalTo: scrollFrameGuide.trailingAnchor),
-//            scrollContainer.heightAnchor.constraint(equalToConstant: 1200),
-            
+        
+        NSLayoutConstraint.activate([
+//            scrollContainer.topAnchor.constraint(equalTo: scrollContentGuide.bottomAnchor),
+//            scrollContainer.bottomAnchor.constraint(equalTo: scrollContentGuide.topAnchor),
+//            scrollContainer.leadingAnchor.constraint(equalTo: scrollContentGuide.leadingAnchor),
+//            scrollContainer.trailingAnchor.constraint(equalTo: scrollContentGuide.trailingAnchor),
+
+//            scrollContainer.leadingAnchor.constraint(equalTo: scrollFrameGuide.leadingAnchor),
+//            scrollContainer.trailingAnchor.constraint(equalTo: scrollFrameGuide.trailingAnchor),
+            scrollContainer.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            scrollContainer.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            scrollContainer.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            scrollContainer.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            scrollContainer.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+//
             descriptionLabel.topAnchor.constraint(equalTo: scrollContainer.topAnchor),
-//            descriptionLabel.bottomAnchor.constraint(equalTo: scrollContainer.bottomAnchor),
+            descriptionLabel.bottomAnchor.constraint(equalTo: scrollContainer.bottomAnchor),
             descriptionLabel.leadingAnchor.constraint(equalTo: scrollContainer.leadingAnchor),
             descriptionLabel.trailingAnchor.constraint(equalTo: scrollContainer.trailingAnchor),
+            
+            
 
+            
         ])
+        
+        
         
     }
     
