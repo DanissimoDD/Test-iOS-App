@@ -7,7 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		F190AA8D2B8B6BB90049896A /* PauseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F190AA8C2B8B6BB90049896A /* PauseViewModel.swift */; };
+		F150035C2B8E089500642890 /* NewProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F150035B2B8E089500642890 /* NewProfileViewModel.swift */; };
+		F150035E2B8E08BC00642890 /* NewProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F150035D2B8E08BC00642890 /* NewProfileViewController.swift */; };
+		F15003612B8E319100642890 /* MainCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F15003602B8E319100642890 /* MainCell.swift */; };
 		F1A150DC2B86855B0013EC1D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A150DB2B86855B0013EC1D /* AppDelegate.swift */; };
 		F1A150DE2B86855B0013EC1D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A150DD2B86855B0013EC1D /* SceneDelegate.swift */; };
 		F1A150E52B86855C0013EC1D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F1A150E42B86855C0013EC1D /* Assets.xcassets */; };
@@ -15,12 +17,13 @@
 		F1DFDBF62B869FC0008CBC7F /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1DFDBF52B869FC0008CBC7F /* NetworkManager.swift */; };
 		F1DFDBF82B86A190008CBC7F /* ViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1DFDBF72B86A190008CBC7F /* ViewData.swift */; };
 		F1F0D7F52B875CD500F68500 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F0D7F42B875CD500F68500 /* ViewModel.swift */; };
-		F1FE36CA2B8A927000EBEC27 /* PauseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1FE36C92B8A927000EBEC27 /* PauseViewController.swift */; };
 		F1FE36CC2B8A92CC00EBEC27 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1FE36CB2B8A92CC00EBEC27 /* ViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		F190AA8C2B8B6BB90049896A /* PauseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PauseViewModel.swift; sourceTree = "<group>"; };
+		F150035B2B8E089500642890 /* NewProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewProfileViewModel.swift; sourceTree = "<group>"; };
+		F150035D2B8E08BC00642890 /* NewProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewProfileViewController.swift; sourceTree = "<group>"; };
+		F15003602B8E319100642890 /* MainCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCell.swift; sourceTree = "<group>"; };
 		F1A150D82B86855B0013EC1D /* Test_test.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Test_test.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F1A150DB2B86855B0013EC1D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F1A150DD2B86855B0013EC1D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -30,7 +33,6 @@
 		F1DFDBF52B869FC0008CBC7F /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		F1DFDBF72B86A190008CBC7F /* ViewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewData.swift; sourceTree = "<group>"; };
 		F1F0D7F42B875CD500F68500 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
-		F1FE36C92B8A927000EBEC27 /* PauseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PauseViewController.swift; sourceTree = "<group>"; };
 		F1FE36CB2B8A92CC00EBEC27 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -45,6 +47,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F150035F2B8E318000642890 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				F15003602B8E319100642890 /* MainCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
 		F1A150CF2B86855B0013EC1D = {
 			isa = PBXGroup;
 			children = (
@@ -64,6 +74,7 @@
 		F1A150DA2B86855B0013EC1D /* Test_test */ = {
 			isa = PBXGroup;
 			children = (
+				F150035F2B8E318000642890 /* Cells */,
 				F1A150DB2B86855B0013EC1D /* AppDelegate.swift */,
 				F1DFDBF42B869F03008CBC7F /* ViewModel */,
 				F1DFDBF32B869EFB008CBC7F /* View */,
@@ -89,7 +100,7 @@
 			isa = PBXGroup;
 			children = (
 				F1FE36CB2B8A92CC00EBEC27 /* ViewController.swift */,
-				F1FE36C92B8A927000EBEC27 /* PauseViewController.swift */,
+				F150035D2B8E08BC00642890 /* NewProfileViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -98,7 +109,7 @@
 			isa = PBXGroup;
 			children = (
 				F1F0D7F42B875CD500F68500 /* ViewModel.swift */,
-				F190AA8C2B8B6BB90049896A /* PauseViewModel.swift */,
+				F150035B2B8E089500642890 /* NewProfileViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -173,14 +184,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F150035C2B8E089500642890 /* NewProfileViewModel.swift in Sources */,
 				F1DFDBF62B869FC0008CBC7F /* NetworkManager.swift in Sources */,
-				F190AA8D2B8B6BB90049896A /* PauseViewModel.swift in Sources */,
 				F1A150DC2B86855B0013EC1D /* AppDelegate.swift in Sources */,
 				F1A150DE2B86855B0013EC1D /* SceneDelegate.swift in Sources */,
 				F1F0D7F52B875CD500F68500 /* ViewModel.swift in Sources */,
 				F1FE36CC2B8A92CC00EBEC27 /* ViewController.swift in Sources */,
 				F1DFDBF82B86A190008CBC7F /* ViewData.swift in Sources */,
-				F1FE36CA2B8A927000EBEC27 /* PauseViewController.swift in Sources */,
+				F150035E2B8E08BC00642890 /* NewProfileViewController.swift in Sources */,
+				F15003612B8E319100642890 /* MainCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

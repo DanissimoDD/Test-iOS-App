@@ -52,7 +52,7 @@ extension ViewModel: ViewModelType {
     }
     
     func willLoad(){
-        
+        // сделать лоадинг вью
     }
     func onFailure(){
         

@@ -26,7 +26,7 @@ struct UserDataNetworkManager {
         error: Error?,
         onFail: @escaping (String) -> Void
     ) {
-        onFail(error?.localizedDescription ?? "Какаято ошибка")
+        onFail(error?.localizedDescription ?? "Ошибка")
     }
 }
 
@@ -59,14 +59,18 @@ extension UserDataNetworkManager: UserDataNetworkManagerProtocol {
                 return
             }
             guard let data = data else {
-                //
+                onFail("Ошибка данных")
                 return
             }
             let decoder = JSONDecoder()
             decoder.keyDecodingStrategy = .convertFromSnakeCase
-            let userDataList: UserDataList = try! decoder.decode(UserDataList.self, from: data)
+            let userDataList: UserDataList? = try? decoder.decode(UserDataList.self, from: data)
+            guard let userDataList = userDataList, let userData = userDataList.results.first else {
+                onFail("Ошибка данных")
+                return
+            }
             DispatchQueue.main.async {
-                onSuccess(userDataList.results[0])
+                onSuccess(userData)
             }
         }
         task.resume()

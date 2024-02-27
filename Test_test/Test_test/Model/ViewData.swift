@@ -15,7 +15,7 @@ extension UserDataList: Decodable{
 
 }
 
-class UserData: Decodable { // мб перенести подписку в экстеншн
+final class UserData: Decodable { // мб перенести подписку в экстеншн
     // Norm
     let gender: String?
     let email: String?

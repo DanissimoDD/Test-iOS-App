@@ -16,15 +16,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
         let networkManager = UserDataNetworkManager()
-        let viewModel = ViewModel(userDataNetworkManager: networkManager)
-        let viewController = ViewController(viewModel: viewModel)
+        let viewModel = NewProfileViewModel() //userDataNetworkManager: networkManager
+        let viewController = NewProfileViewController(viewModel: viewModel)
         let navigationController = UINavigationController(rootViewController: viewController)
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
-        
-        
-//        window?.rootViewController = viewController //test2 //
-//        window?.makeKeyAndVisible()
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
