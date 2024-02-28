@@ -15,7 +15,7 @@ extension UserDataList: Decodable{
 
 }
 
-final class UserData: Decodable { // мб перенести подписку в экстеншн
+struct UserData {
     // Norm
     let gender: String?
     let email: String?
@@ -59,7 +59,7 @@ final class UserData: Decodable { // мб перенести подписку в
             case uuid
         }
     }
-    required init(from decoder: Decoder) throws {
+    init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
         self.gender = try? container.decode(String.self, forKey: .gender)
@@ -82,4 +82,8 @@ final class UserData: Decodable { // мб перенести подписку в
         let loginContainer = try container.nestedContainer(keyedBy: CodingKeys.LoginCodingKeys.self, forKey: .login)
         self.uuid = try? loginContainer.decode(String.self, forKey: .uuid)
     }
+}
+
+extension UserData: Decodable{
+    
 }

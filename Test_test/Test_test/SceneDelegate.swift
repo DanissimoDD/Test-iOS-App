@@ -16,7 +16,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
         let networkManager = UserDataNetworkManager()
-        let viewModel = NewProfileViewModel() //userDataNetworkManager: networkManager
+        let viewModel = NewProfileViewModel(userDataNetworkManager: networkManager) //
         let viewController = NewProfileViewController(viewModel: viewModel)
         let navigationController = UINavigationController(rootViewController: viewController)
         window?.rootViewController = navigationController

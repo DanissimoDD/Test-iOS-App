@@ -100,7 +100,7 @@ final class ViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 25)
         button.layer.cornerRadius = 15
-        button.addTarget(self, action: #selector(pauseTapped), for: .touchUpInside)
+//        button.addTarget(self, action: #selector(pauseTapped), for: .touchUpInside)
         return button
     }()
     
@@ -118,7 +118,6 @@ final class ViewController: UIViewController {
         scContainer.backgroundColor = .white
         return scContainer
     }()
-    // зачем тут скобки и почему мы так делаем
     
     private let titleLabel: UILabel = {
         let label = UILabel()
@@ -237,39 +236,54 @@ final class ViewController: UIViewController {
     private func setupBindings() {
         viewModel.didLoadUserData = { [weak self] userData in
             guard let self = self else { return }
-            if let firstName = userData.first, let lastName = userData.last {
-                self.userNameLabel.text = firstName + " " + lastName
-            }
-            if let string = userData.age, let gender = userData.gender {
-                self.userAgeLabel.text = "Age: " + String(string) + ", " + gender
-            }
-            if let country = userData.country, let city = userData.city{
-                self.userLocationLabel.text = country + ", " + city
-            }
-            if let email = userData.email {
-                self.userEmailLabel.text = email
-            }
-            guard let picture = userData.large, let url = URL(string: picture) else { return }
-            DispatchQueue.global(qos: .userInitiated).async { [weak self] in
-                guard let image = try? Data(contentsOf: url) else { return }
-                if let image = UIImage(data: image) {
-                    DispatchQueue.main.async {
-                        self?.userProfileImageView.image = image
-                    }
-                }
-            }
-            print(userData.large!)
+            self.fillProfileUserData(userData)
+            self.displayUserProfilePicture(userData)
         }
         viewModel.onError = { [weak self] errorString in
             print(errorString)
         }
     }
     
-    func setPause(){
+    private func fillProfileUserData(_ userData: UserData){
+        if let firstName = userData.first, let lastName = userData.last {
+            self.userNameLabel.text = firstName + " " + lastName
+            self.userNameLabel.isHidden = false
+        } else {
+            self.userNameLabel.isHidden = true
+        }
+        if let string = userData.age, let gender = userData.gender {
+            self.userAgeLabel.text = "Age: " + String(string) + ", " + gender
+            self.userAgeLabel.isHidden = false
+        } else {
+            self.userAgeLabel.isHidden = true
+        }
+        if let country = userData.country, let city = userData.city{
+            self.userLocationLabel.text = country + ", " + city
+            self.userLocationLabel.isHidden = false
+        } else {
+            self.userLocationLabel.isHidden = true
+        }
+        self.userEmailLabel.isHidden = userData.email == nil
+        self.userEmailLabel.text = userData.email
+    }
+    
+    private func displayUserProfilePicture(_ userData: UserData){
+        guard let picture = userData.large, let url = URL(string: picture) else { return }
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            guard let image = try? Data(contentsOf: url) else { return }
+            if let image = UIImage(data: image) {
+                DispatchQueue.main.async {
+                    self?.userProfileImageView.image = image
+                }
+            }
+        }
+    }
+        
+//    func setPause(){
 //        let pauseViewModel = PauseViewModel()
 //        let pauseViewController = PauseViewController(viewModel: pauseViewModel)
 //        self.navigationController?.pushViewController(pauseViewController, animated: true)
-    }
+//    }
     
     // MARK: @objc
     
@@ -277,13 +291,8 @@ final class ViewController: UIViewController {
         viewModel.didLoad()
     }
         
-    @objc private func pauseTapped() {
-        setPause()
-    }
-    
-    
-    
-    
-    
+//    @objc private func pauseTapped() {
+//        setPause()
+//    }
     
 }
