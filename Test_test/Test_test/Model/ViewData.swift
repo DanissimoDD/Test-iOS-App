@@ -19,6 +19,7 @@ struct UserData {
     // Norm
     let gender: String?
     let email: String?
+    let phone: String?
         
     // nestedNameContainer
     let first: String?
@@ -36,6 +37,7 @@ struct UserData {
     enum CodingKeys: String, CodingKey {
         case gender
         case name
+        case phone
         enum NameCodingKeys: String, CodingKey {
             case first
             case last
@@ -64,6 +66,7 @@ struct UserData {
 
         self.gender = try? container.decode(String.self, forKey: .gender)
         self.email = try? container.decode(String.self, forKey: .email)
+        self.phone = try? container.decode(String.self, forKey: .phone)
         // nestedNameContainer
         let nameContainer = try container.nestedContainer(keyedBy: CodingKeys.NameCodingKeys.self, forKey: .name)
         self.first = try? nameContainer.decode(String.self, forKey: .first)

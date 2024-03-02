@@ -9,17 +9,32 @@ import UIKit
 
 final class NewProfileViewController: UIViewController {
     
-    private var tableView: UITableView = {
-        let tableView = UITableView()
+    private lazy var tableView: UITableView = {
+        let tableView = UITableView(frame: .zero, style: .grouped)
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        // hier
-        tableView.register(ProfileMainPictureCell.self, forCellReuseIdentifier: ProfileMainPictureCell.reuseIdentifier)
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
+        tableView.estimatedRowHeight = 200
+        tableView.backgroundColor = .white
+        tableView.estimatedSectionHeaderHeight = 50
+//        if #available(iOS 15, *) {
+//
+//        }
+        tableView.register(ProfileMainPictureCell.self,
+                           forCellReuseIdentifier: ProfileMainPictureCell.reuseIdentifier)
+        tableView.register(NewProfileFieldDataCell.self,
+                           forCellReuseIdentifier: NewProfileFieldDataCell.reuseIdentifier)
+        tableView.register(NewProfileFieldAboutUserDataCell.self,
+                           forCellReuseIdentifier: NewProfileFieldAboutUserDataCell.reuseIdentifier)
+        tableView.register(NewProfileRegularSectionHeader.self,
+                           forHeaderFooterViewReuseIdentifier: NewProfileRegularSectionHeader.reuseIdentifier)
         return tableView
     } ()
     
-    private var viewModel: ViewModelType!
+    private var viewModel: NewProfileViewModelType!
     
-    init(viewModel: ViewModelType) {
+    init(viewModel: NewProfileViewModelType) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -32,14 +47,14 @@ final class NewProfileViewController: UIViewController {
         super.viewDidLoad()
         setupView()
         setupConstraints()
-        
+        setupBindings()
+        viewModel.didLoad()
     }
     
     private func setupView() {
         view.backgroundColor = .white
-        tableView.dataSource = self // ругается если делать его в самом tableView
-        tableView.delegate = self // ругается если делать его в самом tableView
         view.addSubview(tableView)
+        
     }
     
     private func setupConstraints() {
@@ -54,28 +69,16 @@ final class NewProfileViewController: UIViewController {
     }
     
     private func setupBindings() {
-        viewModel.didLoadUserData = { [weak self] userData in
+        viewModel.didLoadUserData = { [weak self] in
             guard let self = self else { return }
-            self.displayUserProfilePicture(userData)
+            self.tableView.reloadData()
         }
         viewModel.onError = { [weak self] errorString in
             print(errorString)
         }
     }
     
-    
-    private func displayUserProfilePicture(_ userData: UserData){
-        guard let picture = userData.large, let url = URL(string: picture) else { return }
-        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
-            guard let image = try? Data(contentsOf: url) else { return }
-            if let image = UIImage(data: image) {
-                DispatchQueue.main.async {
-                    //self?.userProfileImageView.image = image
-                }
-            }
-        }
-    }
-    
+    //пример нажатия кнопки
 //    @objc private func buttonTapped() {
 //        DispatchQueue.main.async {
 //            self.navigationController?.popViewController(animated: true)
@@ -86,22 +89,127 @@ final class NewProfileViewController: UIViewController {
 extension NewProfileViewController: UITableViewDataSource {
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        1
+        viewModel.sectionViewModels.count
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        1
+        viewModel.sectionViewModels[section].numberOfRows
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if let cell = tableView.dequeueReusableCell(withIdentifier: ProfileMainPictureCell.reuseIdentifier, for: indexPath) as? ProfileMainPictureCell{
-            // function cell.setData(imageURL: URL, name: String)
-//            cell.setUserData()
+        if let mainSectionViewModel = viewModel.sectionViewModels[indexPath.section].mainDataSection {
+            return getCellFromMainSection(
+                tableView,
+                cellForRowAt: indexPath,
+                mainSectionViewModel: mainSectionViewModel
+            )
+        } else if let regularDataSectionViewModel = viewModel.sectionViewModels[indexPath.section].regularDataSection {
+            if indexPath.row == 0 {
+                return getAgeGenderCellFromRegularSection(
+                    tableView,
+                    cellForRowAt: indexPath,
+                    regularSectionViewModel: regularDataSectionViewModel
+                )
+            } else  if indexPath.row == 1 {
+                return getLocationCellFromRegularSection(
+                    tableView,
+                    cellForRowAt: indexPath,
+                    regularSectionViewModel: regularDataSectionViewModel
+                )
+            } else {
+                return getAboutMeCellFromRegularSection(
+                    tableView,
+                    cellForRowAt: indexPath,
+                    regularSectionViewModel: regularDataSectionViewModel
+                )
+            }
+        } else {
+            return UITableViewCell()
+        }
+    }
+    
+    private func getAgeGenderCellFromRegularSection(
+        _ tableView: UITableView,
+        cellForRowAt indexPath: IndexPath,
+        regularSectionViewModel: NewProfileRegularSectionViewModel
+    ) -> UITableViewCell {
+        if let fieldDataCellViewModel = regularSectionViewModel.ageGender,
+           let cell = tableView.dequeueReusableCell(withIdentifier: NewProfileFieldDataCell.reuseIdentifier, for: indexPath) as? NewProfileFieldDataCell {
+            cell.configurate(viewModel: fieldDataCellViewModel)
             return cell
         } else {
             return UITableViewCell()
         }
     }
+    
+    private func getLocationCellFromRegularSection(
+        _ tableView: UITableView,
+        cellForRowAt indexPath: IndexPath,
+        regularSectionViewModel: NewProfileRegularSectionViewModel
+    ) -> UITableViewCell {
+        if let fieldDataCellViewModel = regularSectionViewModel.location,
+           let cell = tableView.dequeueReusableCell(withIdentifier: NewProfileFieldDataCell.reuseIdentifier, for: indexPath) as? NewProfileFieldDataCell {
+            cell.configurate(viewModel: fieldDataCellViewModel)
+            return cell
+        } else {
+            return UITableViewCell()
+        }
+    }
+    
+    private func getAboutMeCellFromRegularSection(
+        _ tableView: UITableView,
+        cellForRowAt indexPath: IndexPath,
+        regularSectionViewModel: NewProfileRegularSectionViewModel
+    ) -> UITableViewCell {
+        let fieldDataCellViewModel = regularSectionViewModel.aboutMe
+        if let cell = tableView.dequeueReusableCell(withIdentifier: NewProfileFieldAboutUserDataCell.reuseIdentifier,
+                                                    for: indexPath) as? NewProfileFieldAboutUserDataCell {
+            cell.configurate(viewModel: fieldDataCellViewModel)
+            return cell
+        } else {
+            return UITableViewCell()
+        }
+    }
+    
+    private func getCellFromMainSection(
+        _ tableView: UITableView,
+        cellForRowAt indexPath: IndexPath,
+        mainSectionViewModel: NewProfileMainSectionViewModel
+    ) -> UITableViewCell {
+        if let topCellViewModel = mainSectionViewModel.topCellViewModel,
+           let cell = tableView.dequeueReusableCell(withIdentifier: ProfileMainPictureCell.reuseIdentifier, for: indexPath) as? ProfileMainPictureCell {
+            cell.configurate(viewModel: topCellViewModel)
+        return cell
+        }
+        return UITableViewCell()
+    }
+
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if viewModel.sectionViewModels[section].mainDataSection != nil {
+            return nil
+        } else if let regularDataSectionViewModel = viewModel.sectionViewModels[section].regularDataSection,
+                  let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: NewProfileRegularSectionHeader.reuseIdentifier) as? NewProfileRegularSectionHeader {
+            headerView.configurate(viewModel: regularDataSectionViewModel.headerViewModel)
+            return headerView
+        } else {
+            return nil
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if viewModel.sectionViewModels[section].mainDataSection != nil {
+            return .leastNonzeroMagnitude
+        } else if let _ = viewModel.sectionViewModels[section].regularDataSection,
+                  let _ = tableView.dequeueReusableHeaderFooterView(
+                    withIdentifier: NewProfileRegularSectionHeader.reuseIdentifier
+                  ) as? NewProfileRegularSectionHeader {
+            return UITableView.automaticDimension
+        } else {
+            return .leastNonzeroMagnitude
+        }
+    }
+    
 }
 
 extension NewProfileViewController: UITableViewDelegate {
@@ -110,5 +218,3 @@ extension NewProfileViewController: UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: false)
     }
 }
-
-

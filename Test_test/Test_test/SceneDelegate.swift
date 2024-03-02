@@ -16,7 +16,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
         let networkManager = UserDataNetworkManager()
-        let viewModel = NewProfileViewModel(userDataNetworkManager: networkManager) //
+        let mapper = UserDataMapper()
+        let viewModel = NewProfileViewModel(
+            userDataNetworkManager: networkManager,
+            mapper: mapper
+        )
         let viewController = NewProfileViewController(viewModel: viewModel)
         let navigationController = UINavigationController(rootViewController: viewController)
         window?.rootViewController = navigationController
