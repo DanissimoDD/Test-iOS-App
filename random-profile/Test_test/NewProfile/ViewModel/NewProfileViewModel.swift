@@ -30,6 +30,7 @@ class NewProfileViewModel {
     
     private let userDataNetworkManager: UserDataNetworkManagerProtocol
     private let mapper: UserDataMapperProtocol
+//    private let userData: UserData?
     
     init(
         userDataNetworkManager: UserDataNetworkManager,

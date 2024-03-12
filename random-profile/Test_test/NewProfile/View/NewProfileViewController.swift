@@ -7,6 +7,7 @@
 
 import UIKit
 
+
 final class NewProfileViewController: UIViewController {
     
     private lazy var tableView: UITableView = {
@@ -62,24 +63,26 @@ final class NewProfileViewController: UIViewController {
         setupConstraints()
         setupBindings()
         viewModel.didLoad()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
-            self.activityView.stopAnimating()
-        }
     }
     
-    override func viewDidAppear() {
-        view.isHidden = true
-        
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.isHidden = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) { // сильно кринж или нет?
+            self.activityView.stopAnimating()
+            self.tableView.isHidden = false
+        }
     }
     
     
     private func setupView() {
-        view.addSubview(activityView)
-        activityView.startAnimating()
+        view.backgroundColor = .white
         navigationItem.rightBarButtonItem = nextProfileBarButton
         navigationItem.leftBarButtonItem = oldVersionBarButton
-        view.backgroundColor = .white
+        view.addSubview(activityView)
         view.addSubview(tableView)
+        tableView.allowsSelection = false
+        activityView.startAnimating()
     }
     
     private func setupConstraints() {
@@ -92,7 +95,7 @@ final class NewProfileViewController: UIViewController {
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             
             activityView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            activityView.centerYAnchor.constraint(equalTo: view.topAnchor, constant: 80)
+            activityView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
             
         ])
     }
