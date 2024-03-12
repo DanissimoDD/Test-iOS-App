@@ -67,6 +67,12 @@ final class NewProfileViewController: UIViewController {
         }
     }
     
+    override func viewDidAppear() {
+        view.isHidden = true
+        
+    }
+    
+    
     private func setupView() {
         view.addSubview(activityView)
         activityView.startAnimating()

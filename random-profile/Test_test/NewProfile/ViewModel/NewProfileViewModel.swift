@@ -8,7 +8,6 @@
 import Foundation
 
 protocol NewProfileViewModelType {
-    
     // Output
     
     var didLoadUserData: (() -> Void)? { get set }
